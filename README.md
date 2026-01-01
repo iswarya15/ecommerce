@@ -70,7 +70,7 @@ private Product product;
 * Many records of the current entity
 *  are associated with One Product
 
-![img.png](img.png)
+![img.png](assets/img.png)
 
 🔹 What JPA does automatically without writing SQL:
 
@@ -114,7 +114,7 @@ So:
 
 * **Order** does not create another column
 
-![img_1.png](img_1.png)
+![img_1.png](assets/img_1.png)
 
 What **cascade = CascadeType.ALL** does &rarr; It means operations on Order propagate to OrderItem
 
@@ -125,3 +125,56 @@ What **cascade = CascadeType.ALL** does &rarr; It means operations on Order prop
 | `update(order)`    | updates all orderItems |
 
 This maps a one-to-many relationship where an Order can have multiple OrderItems, with the foreign key managed by the OrderItem entity and cascading operations from Order to its items.
+
+`Records` don’t have getters — the field name itself is the accessor method.
+
+```
+public record OrderRequest(
+    String customerName,
+    String email
+) {}
+
+order.setCustomerName(orderRequest.customerName());
+order.setEmail(orderRequest.email());
+```
+
+OrderRequest is a DTO implemented using a Java record.
+
+## OrderService -- PlaceOrder()
+
+### Create OrderItem Entity
+
+![img.png](assets/img.png)
+
+
+* Convert OrderItem → OrderItemResponse
+* Extracts only **required data**. 
+* Avoids exposing internal entity structure
+* Best practice in REST APIs
+
+**Builder** ensures preventing partially constructed objects
+
+* required fields are set
+
+* object is valid when created
+
+This is important for child entities like OrderItem.
+
+❌ Builder for Order can be awkward
+
+Order is assembled incrementally
+
+Builder works best when all data is available upfront
+
+❌ Setter for OrderItem can be risky
+
+You might forget to set a required field
+
+Leads to runtime bugs
+
+| Scenario                  | Use               |
+| ------------------------- | ----------------- |
+| Entity built step-by-step | `new + setters`   |
+| Entity built all-at-once  | `builder()`       |
+| JPA root entity           | setters preferred |
+| Value/child object        | builder preferred |

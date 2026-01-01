@@ -1,6 +1,7 @@
 package com.example.ecommerce.model.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record OrderResponse(
@@ -8,7 +9,7 @@ public record OrderResponse(
         String customerName,
         String email,
         String status,
-        LocalDate orderDate,
+        LocalDateTime orderDate,
         List<OrderItemResponse> items
 ) {
 }

@@ -70,7 +70,7 @@ private Product product;
 * Many records of the current entity
 *  are associated with One Product
 
-![img.png](assets/img.png)
+![img3.png](assets/img3.png)
 
 🔹 What JPA does automatically without writing SQL:
 
